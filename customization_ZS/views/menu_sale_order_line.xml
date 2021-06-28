@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<odoo>
+    <record id="sale_order_line_tree1" model="ir.ui.view">
+        <field name="name">sale.order_line_tree1</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree string="ZS-CP">
+                <field name="x_order_ref"/>
+                <field name="x_product_code" string="Item Code"/>
+                <field name="x_product_id"/>
+                <field name="x_mzz"/>
+                <field name="x_color"/>
+                <field name="x_actual_color"/>
+                <field name="x_commitment_date"/>
+                <field name="xs_small" optional="hide"/>
+                <field name="x_small"/>
+                <field name="x_medium"/>
+                <field name="x_large"/>
+                <field name="x_xl" optional="hide"/>
+                <field name="x_image" widget="image" optional="hide"/>
+                <field name="product_uom_qty"/>
+                <field name="price_unit" string="Rate"/>
+                <field name="price_subtotal" string="Total"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sale_order_line_tree1" model="ir.actions.act_window">
+        <field name="name">Sale Order Lines</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">tree,form</field>
+	<field name="view_id" ref="sale_order_line_tree1"/>
+
+
+
+    </record>
+
+    <menuitem id="menu_sale_order_line" name="Sale Order Line" parent="sale.sale_order_menu" action="action_sale_order_line_tree1"/>
+</odoo>
+

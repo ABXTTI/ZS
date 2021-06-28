@@ -1,0 +1,70 @@
+<odoo>
+    <record id="so_view_order_form_inherit2" model="ir.ui.view">
+        <field name="name">sale.order.form2</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_order_template_id']" position="after">
+                <field name="x_category" required="1"/>
+            </xpath>
+
+<!--            <xpath expr="//field[@name='commitment_date']" position="after">-->
+<!--                <field name="x_order_ref" required="0"/>-->
+<!--            </xpath>-->
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="x_image" widget="image" class="oe_avatar"/>
+            </xpath>
+
+            
+<!--            <xpath expr="//group[@name='g1']" position="before">-->
+<!--                <group>-->
+<!--                    <group>-->
+<!--                        <field name="job_completed" string="Job Completed" attrs = "{'readonly': [('state', '!=', 'sale')]}"/>-->
+<!--                    </group>-->
+<!--                    <group>-->
+<!--                        <field name="job_closed" string="Job Closed" attrs = "{'readonly': [('state', '!=', 'job completed')]}"/>-->
+<!--                    </group>-->
+<!--                </group>-->
+<!--            </xpath>-->
+
+<!--            <xpath expr="//tree/field[@name='product_id']" position="before">-->
+<!--                <field name="i_description"/>-->
+<!--                <field name="i_city"/>-->
+<!--            </xpath>-->
+            <xpath expr="//tree/field[@name='product_uom_qty']" position="before">
+
+                    <field name="x_color"/>
+                    <field name="x_actual_color"/>
+                    <field name="x_weight"/>
+                    <field name="x_gadje"/>
+                    <field name="x_productionprocessdate"/>
+                    <field name="x_small"/>
+                    <field name="x_medium"/>
+                    <field name="x_large"/>
+                    <field name="x_xl"/>
+            </xpath>
+            <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
+                    <field name="x_comments"/>
+                    <field name="x_shippedby"/>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='name']" position="after">
+                    <field name="x_mzz"/>
+            </xpath>
+
+<!--            <xpath expr="//tree/field[@name='price_subtotal']" position="after">-->
+<!--                    <field name="x_image" widget="image"/>-->
+<!--            </xpath>-->
+            <xpath expr="//tree/field[@name='product_id']" position="after">
+                    <field name="x_order_ref"/>
+                    <field name="x_itemcode"/>
+            </xpath>
+
+            <xpath expr="//tree/field[@name='product_id']" position="after">
+                    <field name="x_hscoderef"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

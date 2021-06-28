@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="report_vendor_bill_zs"
+            string="Invoice Voucher"
+            model="account.move"
+            report_type="qweb-pdf"
+            name="customization_ZS.vendorbill"
+            file="customization_ZS.vendorbill"
+            print_report_name="'Vendor Bill - %s' % (object.name)"
+    />
+
+    <report
+            id="report_cash_invoice"
+            string="Cash Invoice Voucher"
+            model="account.move"
+            report_type="qweb-pdf"
+            name="customization_ZS.cashinvoicevoucher"
+            file="customization_ZS.cashinvoicevoucher"
+            print_report_name="'Cash Invoice - %s' % (object.name)"
+    />
+
+    <record id="account.account_invoices" model="ir.actions.report">
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">pdf</field>
+        <field name="module">customization_ZS</field>
+        <field name="py3o_template_fallback">reports/account_invoice.odt</field>
+    </record>
+
+    <report
+        id="attendance_report_pdf"
+        string="Attendance Report"
+        model="attendance.report.wizard"
+        report_type="qweb-pdf"
+        name="customization_ZS.attendance_report_pdf_template"
+        file="customization_ZS.attendance_report_pdf_template"
+    />
+</odoo>

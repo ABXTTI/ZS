@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--<record id="attendance_report_py3o" model="ir.actions.report">-->
+<!--    <field name="name">attendance.report.py3o</field>-->
+<!--    <field name="model">attendance.report.wizard</field>-->
+<!--    <field name="report_name">attendance.report.summary</field>-->
+<!--    <field name="report_type">py3o</field>-->
+<!--    <field name="py3o_filetype">odt</field>-->
+<!--    <field name="module">customization_ZS</field>-->
+<!--    <field name="py3o_template_fallback">reports/attendance_summary.odt</field>-->
+<!--    &lt;!&ndash; Add entry in "Print" drop-down list &ndash;&gt;-->
+<!--&lt;!&ndash;    <field name="binding_type">report</field>&ndash;&gt;-->
+<!--&lt;!&ndash;    <field name="binding_model_id" ref="base.model_attendance_report_wizard"/>&ndash;&gt;-->
+<!--</record>-->
+    <template id="attendance_report_pdf_template">
+        <t t-call="web.html_container">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <b><h3 class="text-center">Attendance Sheet</h3></b>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <t t-foreach="forms" t-as="at">
+                        <div>
+                            <h5><b>Code:    </b><t t-esc="at['employee_code']"/></h5>
+                            <h5><b>Name:    </b><t t-esc="at['person_name']"/></h5>
+                            <br></br>
+                            <br></br>
+                        </div>
+                    </t>
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <table class="table table-sm" style="font-size: 14px">
+                            <thead>
+                                <tr>
+                                    <th style="text-align-left:"><strong>Employee Code</strong></th>
+                                    <th style="text-align-left:"><strong>Name</strong></th>
+                                    <th style="text-align-left:"><strong>Shift</strong></th>
+                                    <th style="text-align-left:"><strong>Check In</strong></th>
+                                    <th style="text-align-left:"><strong>Check Out</strong></th>
+                                    <th style="text-align-left:"><strong>Worked Hours</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="attendances" t-as="o">
+                                    <tr>
+                                        <td style="text-align:left;">
+                                            <t t-esc="o['employee_code']"/>
+                                        </td>
+                                        <td style="text-align:left;">
+                                            <t t-esc="o['person_id']"/>
+                                        </td>
+                                        <td style="text-align:left;">
+                                            <t t-esc="o['shift_name']"/>
+                                        </td>
+                                        <td style="text-align:left;">
+                                            <t t-esc="o['check_in']"/>
+                                        </td>
+                                        <td style="text-align:left;">
+                                            <t t-esc="o['check_out']"/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <t t-esc="o['worked_hours']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+<!--    <template id="attendance_report_pdf_template">-->
+<!--        <t t-call="web.html_container">-->
+<!--            <t t-foreach="dict" t-as="doc">-->
+<!--                <t t-call="attendance_report_pdf_template1"/>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+
+
+</odoo>

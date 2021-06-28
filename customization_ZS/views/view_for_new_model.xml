@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="x_category" model="ir.ui.view">
+        <field name="name">x_category</field>
+        <field name="model">x.category</field>
+        <field name="arch" type="xml">
+            <form string="X Category" edit="false">
+                <field name="x_category"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="x_type" model="ir.ui.view">
+        <field name="name">x_type</field>
+        <field name="model">x.type</field>
+        <field name="arch" type="xml">
+            <form string="Type" edit="false">
+                <field name="x_type"/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

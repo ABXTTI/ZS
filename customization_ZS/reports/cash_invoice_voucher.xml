@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <template id="report_cashinvoicevouchers">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+
+                <!--    header for Vendor Bill-->
+                <div  class="header">
+                    <div style="width:50%; float:left; padding-top:60px;">
+<!--                        <h2><b>ZS KNITWEAR</b></h2>-->
+                        <h3>
+                           <span t-if="doc.type == 'out_invoice' and doc.state == 'posted'">Cash Sale Voucher</span>
+                           <span t-if="doc.type == 'out_invoice' and doc.state == 'draft'">Draft Cash Sale Voucher</span>
+                           <span t-if="doc.type == 'in_invoice' and doc.state == 'posted'">Cash Purchase Voucher</span>
+                           <span t-if="doc.type == 'in_invoice' and doc.state == 'draft'">Draft Cash Purchase Voucher</span>
+                        </h3>
+                    </div>
+<!--                    <div style="width:50%; float:right; text-align:right">-->
+<!--                        <img src='/web/binary/company_logo' style="width:20%"/>-->
+<!--                    </div>-->
+                </div>
+                <!--    header for Vendor Bill-->
+
+                <div class="page">
+                    <div style="width:50%; padding-top:50px">
+                        <div style="width:25%; float:left;">
+                            <t t-if="doc.type == 'in_invoice'">Vendor Name:<br/></t>
+                            <t t-if="doc.type == 'out_invoice'">Customer Name:<br/></t>
+                            <t>Cheque Name:</t><br/>
+                            <t>Document No.:</t><br/>
+                            <t>Voucher Date:</t><br/>
+                            <t>Invoice Date:</t><br/>
+                            <t>GL Date:</t><br/>
+                        </div>
+                        <div style="width:20%; float:left; padding-left:40px">
+                            <t t-esc="doc.partner_id.name"/><br/>
+                            <t t-esc="doc.partner_id.x_cheq_to"/><br/>
+                            <t t-esc="doc.ref"/><br/>
+                            <t t-esc="doc.x_voucherdate"/><br/>
+                            <t t-esc="doc.invoice_date"/><br/>
+                            <t t-esc="doc.date"/><br/>
+                        </div>
+                    </div>
+                    <div style="width:50%; float:right; padding-right:200px">
+                        <div style="width:20%; float:right;">
+                            <t t-esc="doc.name"/><br/>
+                            <t t-esc="doc.amount_total"/><br/>
+<!--                            <t t-esc="doc.amount_total"/><br/>-->
+                            <t t-esc="doc.invoice_payment_term_id.name"/><br/>
+                            <t t-esc="doc.invoice_date_due"/><br/>
+                        </div>
+                        <div style="width:30%; float:right;">
+                            <t>Invoice No.:</t><br/>
+                            <t>Invoice Amount:</t><br/>
+                            <t>Terms:</t><br/>
+                            <t>Due Date:</t><br/>
+                        </div>
+                    </div>
+<!--                    create table-->
+                    <div style="padding-top:180px;">
+                        <table border="1" style="width:100%; border-collapse:collapse; border:1px;">
+                            <tr style="text-align:left">
+                                <th>Account Code</th>
+                                <th>Account Description</th>
+                                <th>Description</th>
+                                <th>Debit (Rs.)</th>
+                                <th>Credit (Rs.)</th>
+                            </tr>
+                            <tr t-foreach="doc.line_ids" t-as="line">
+                                <td t-esc="line.account_id.code"/>
+                                <td t-esc="line.account_id.name"/>
+                                <td t-esc="doc.invoice_line_ids.name"/>
+                                <td t-esc="line.debit" style="text-align:right"/>
+                                <td t-esc="line.credit" style="text-align:right"/>
+                            </tr>
+                            <tr>
+                                <th style="visibility:hidden;"/><th style="visibility:hidden"></th><th style="visibility:hidden;"></th>
+                                <th t-esc="doc.amount_total" style="text-align:right;"/>
+                                <th t-esc="doc.amount_total" style="text-align:right;"/>
+                            </tr>
+                        </table>
+                    <div style="margin-top:50px;">
+                        <b><span>AMOUNT IN WORDS:</span></b>
+                        <span t-esc="doc.currency_id.name+' '+ doc.amount_to_text(doc.amount_total)" style="margin-left:50px"/>
+                    </div>
+
+                    </div>
+                    <div style="width:100%; padding-left:20px; margin-top:100px;">
+                        <div style="width:25%; float:left;">
+                            <t t-esc="doc.create_uid.name"/><br/>
+                            <t>_______________ <br/></t>
+                            <t>Prepared By</t>
+                        </div>
+                        <div style="width:25%; float:right;">
+                            <br/>
+                            <t>_______________ <br/></t>
+                            <t>Approved By</t>
+                        </div>
+                        <div style="width:25%; float:right;">
+                            <br/>
+                            <t>_______________ <br/></t>
+                            <t>Verified By</t>
+                        </div>
+                        <div style="width:25%; float:right;">
+                            <br/>
+                            <t>_______________ <br/></t>
+                            <t>Checked By</t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="cashinvoicevoucher">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="customization_ZS.report_cashinvoicevouchers"/>
+            </t>
+        </t>
+    </template>
+</odoo>
