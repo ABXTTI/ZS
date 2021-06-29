@@ -39,10 +39,49 @@
                     <field name="x_weight"/>
                     <field name="x_gadje"/>
                     <field name="x_productionprocessdate"/>
-                    <field name="x_small"/>
-                    <field name="x_medium"/>
-                    <field name="x_large"/>
-                    <field name="x_xl"/>
+                    <field name="x_1_2" optional="hide"/>
+                    <field name="x_2_3" optional="hide"/>
+                    <field name="x_3_4" optional="hide"/>
+                    <field name="x_4_5" optional="hide"/>
+                    <field name="x_5_6" optional="hide"/>
+                    <field name="x_6_7" optional="hide"/>
+                    <field name="x_7_8" optional="hide"/>
+                    <field name="x_8_9" optional="hide"/>
+                    <field name="x_9_10" optional="hide"/>
+                    <field name="x_10_11" optional="hide"/>
+                    <field name="x_11_12" optional="hide"/>
+                    <field name="x_12_13" optional="hide"/>
+                    <field name="x_13_14" optional="hide"/>
+                    <field name="x_14_15" optional="hide"/>
+                    <field name="x_16_17" optional="hide"/>
+                    <field name="x_18_19" optional="hide"/>
+                    <field name="x_20_21" optional="hide"/>
+                    <field name="x_xxs" optional="hide"/>
+                    <field name="x_small" optional="hide"/>
+                    <field name="x_medium" optional="hide"/>
+                    <field name="x_large" optional="hide"/>
+                    <field name="x_xl" optional="hide"/>
+                    <field name="x_xxl" optional="hide"/>
+                    <field name="x_3xl" optional="hide"/>
+                    <field name="x_4xl" optional="hide"/>
+                    <field name="x_5xl" optional="hide"/>
+                    <field name="x_6xl" optional="hide"/>
+                    <field name="x_0" optional="hide"/>
+                    <field name="x_2" optional="hide"/>
+                    <field name="x_4" optional="hide"/>
+                    <field name="x_6" optional="hide"/>
+                    <field name="x_8" optional="hide"/>
+                    <field name="x_10" optional="hide"/>
+                    <field name="x_12" optional="hide"/>
+                    <field name="x_14" optional="hide"/>
+                    <field name="x_16" optional="hide"/>
+                    <field name="x_18" optional="hide"/>
+                    <field name="x_20" optional="hide"/>
+                    <field name="x_22" optional="hide"/>
+                    <field name="x_24" optional="hide"/>
+                    <field name="x_26" optional="hide"/>
+                    <field name="x_28" optional="hide"/>
+                    <field name="x_30" optional="hide"/>
             </xpath>
             <xpath expr="//tree/field[@name='product_uom_qty']" position="after">
                     <field name="x_comments"/>
