@@ -82,8 +82,8 @@ class AttendanceReportWizardPre(models.Model):
                         'x_daytype': att.day_type,
                         'x_status': att.state,
                         'x_leavetype': att.leave_type.name,
-                        'x_latein': att.late_in,
-                        'x_earlyout': att.early_out,
+                        'x_latein': round(att.late_in, 2),
+                        'x_earlyout': round(att.early_out, 2),
                         'x_workedhours': round(att.worked_hours, 2)
                     }))
 
