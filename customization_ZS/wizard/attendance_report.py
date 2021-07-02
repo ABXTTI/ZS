@@ -1,5 +1,7 @@
 from odoo import models, fields, api
+from datetime import datetime
 import pytz
+from pytz import timezone
 import datetime
 import random
 from odoo import api, models
@@ -14,8 +16,8 @@ class AttListCust(models.TransientModel):
     x_starttime = fields.Char(string="start Time")
     x_endtime = fields.Char(string="End Time")
     x_shifhours = fields.Char(string="Shift Hours")
-    x_checkin = fields.Char(string="Check In")
-    x_checkout = fields.Char(string="Check Out")
+    x_checkin = fields.Datetime(string="Check In")
+    x_checkout = fields.Datetime(string="Check Out")
     x_overtime = fields.Char(string="Overtime")
     x_daytype = fields.Char(string="Day Type")
     x_status = fields.Char(string="Status")
@@ -76,8 +78,8 @@ class AttendanceReportWizardPre(models.Model):
                         'x_starttime': att.start_time,
                         'x_endtime': att.end_time,
                         'x_shifhours': att.shift_hours,
-                        'x_checkin': att.check_in,
-                        'x_checkout': att.check_out,
+                        'x_checkin': (att.check_in + datetime.timedelta(hours=5)),
+                        'x_checkout': (att.check_out + datetime.timedelta(hours=5)),
                         'x_overtime': round(att.rule_overtime, 2),
                         'x_daytype': att.day_type,
                         'x_status': att.state,
