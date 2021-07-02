@@ -22,7 +22,7 @@
 
     <record id="account.account_invoices" model="ir.actions.report">
         <field name="report_type">py3o</field>
-        <field name="py3o_filetype">pdf</field>
+        <field name="py3o_filetype">odt</field>
         <field name="module">customization_ZS</field>
         <field name="py3o_template_fallback">reports/account_invoice.odt</field>
     </record>
@@ -35,4 +35,26 @@
         name="customization_ZS.attendance_report_pdf_template"
         file="customization_ZS.attendance_report_pdf_template"
     />
+
+<!--    <record id="customization_ZS.attendance_report_pdf1" model="ir.actions.report">-->
+<!--        <field name="report_type">py3o</field>-->
+<!--        <field name="py3o_filetype">odt</field>-->
+<!--        <field name="module">customization_ZS</field>-->
+<!--        <field name="py3o_template_fallback">reports/attendance_summary.odt</field>-->
+<!--    </record>-->
+
+    <record id="attendance_report_pdf1" model="ir.actions.report">
+        <field name="name">Attendance Summary</field>
+        <field name="model">attendance.report.wizard</field>
+        <field name="report_name">attendance_report_odt</field>
+        <field name="report_type">py3o</field>
+        <field name="report_file">reports/attendance_summary.odt</field>
+        <field name="py3o_filetype">odt</field>
+        <field name="module">customization_ZS</field>
+        <field name="py3o_template_fallback">reports/attendance_summary.odt</field>
+        <!-- Add entry in "Print" drop-down list -->
+        <field name="binding_type">report</field>
+        <field name="binding_model_id" ref="model_attendance_report_wizard"/>
+    </record>
+
 </odoo>

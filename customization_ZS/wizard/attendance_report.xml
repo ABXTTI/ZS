@@ -1,33 +1,49 @@
 <odoo>
-    <data>
-        <record id="attendance_report_wiz_view" model="ir.ui.view">
-            <field name="name">attendance.report.wiz.view</field>
-            <field name="model">attendance.report.wizard</field>
-            <field name="arch" type="xml">
-                <form>
-                    <group>
-                        <group>
-                            <field name="person_id"/>
-                            <field name="date_from"/>
-                            <field name="date_to"/>
-                        </group>
-                    <footer>
-<!--                        <button string="test Print Attendance" type="object" name="print_attendance"/>-->
-                        <button string="Print Attendance" type="object" name="print_report"/>
-                        <button string="Cancel" special="cancel" class="btn btn-secondary"/>
-                    </footer>
-                    </group>
-                </form>
-            </field>
-        </record>
+    <record id="attendance_report_wiz_view_tree" model="ir.ui.view">
+        <field name="name">attendance.report.wiz.view.tree</field>
+        <field name="model">attendance.report.wizard</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="id"/>
+                <field name="employee_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+            </tree>
+        </field>
+    </record>
 
-        <record id="attendance_report_action" model="ir.actions.act_window">
-            <field name="name">Attendance Report Action</field>
-            <field name="res_model">attendance.report.wizard</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-        </record>
-        <menuitem name="Attendance Report" id="attendance_report_menu" parent="hr_attendance.menu_hr_attendance_manage_attendances"
-                  action="attendance_report_action"/>
-    </data>
+    <record id="attendance_report_wiz_view" model="ir.ui.view">
+        <field name="name">attendance.report.wiz.view</field>
+        <field name="model">attendance.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="person_ids" widget="many2many_tags"/>
+<!--                        <field name="employee_id"/>-->
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="select_all_employees"/>
+                        <field name="attendance_list"/>
+<!--                        <field name="eval"/>-->
+                    </group>
+                <footer>
+<!--                        <button string="test Print Attendance" type="object" name="print_attendance"/>-->
+                    <button string="Generate" type="object" name="generate_report"/>
+                    <button string="Cancel" special="cancel" class="btn btn-secondary"/>
+                </footer>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="attendance_report_action" model="ir.actions.act_window">
+        <field name="name">Attendance Report Action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">attendance.report.wizard</field>
+        <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+    </record>
+    <menuitem name="Attendance Report Wizard" id="attendance_report_menu" parent="hr_attendance.menu_hr_attendance_manage_attendances"
+              action="attendance_report_action"/>
 </odoo>
