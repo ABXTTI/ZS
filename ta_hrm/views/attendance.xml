@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_attendance_tree_inherit1" model="ir.ui.view">
+        <field name="name">view.attendance.tree.inherit1</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="x_employee_code" string="Employee Code"/>
+                <field name="x_department_id"/>
+                <field name="x_job_id"/>
+                <field name="x_shift_attendance"/>
+                <field name="x_day"/>
+                <field name="day_name"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="shift_hours"/>
+            </xpath>
+            <xpath expr="//field[@name='worked_hours']" position="after">
+                <field name="t_overtime" widget="float_time"/>
+                <field name="rule_overtime" widget="float_time"/>
+                <field name="day_type"/>
+                <field name="state"/>
+                <field name="leave_type"/>
+                <field name="days_count" sum="Total Days"/>
+                <field name="late_in" widget="float_time" sum="Total Late In"/>
+                <field name="early_out" widget="float_time" sum="Total Late Out"/>
+            </xpath>
+        </field>
+    </record>
+
+<!--    Search view inherit-->
+    <record id="hr_attendance_view_filter_inherit1" model="ir.ui.view">
+        <field name="name">hr.attendance.view.filter.inherit1</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="x_employee_code" string="Badge ID"/>
+                <field name="x_department_id"/>
+                <field name="x_job_id"/>
+                <field name="x_shift_attendance"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="shift_hours"/>
+                <field name="t_overtime"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
