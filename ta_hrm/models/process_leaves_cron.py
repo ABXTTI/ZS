@@ -115,7 +115,7 @@ class ProcessLeavesCrone(models.Model):
                                 att_var.write({
                                     'leave_type': rec.holiday_status_id,
                                     'days_count': 0.5 if r.days_count < 0.5 else 1,
-                                    'state': "5",
+                                    'state': "5.1" if rec.holiday_status_id.name == "Short Leave" else "5",
                                     'late_in': 0.0,
                                     'early_out': 0.0,
                                     })

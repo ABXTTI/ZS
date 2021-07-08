@@ -125,6 +125,7 @@ class HrAttendance(models.Model):
         ('3', 'Early Out'),
         ('4', 'Half Day'),
         ('5', 'Half Day Leave'),
+        ('5.1', 'Short Leave'),
         ('6', 'Leave'),
         ('13', 'Off-Day'),
     ], 'Status', default='0', readonly=True,)
