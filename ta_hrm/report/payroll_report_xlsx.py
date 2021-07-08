@@ -30,11 +30,17 @@ class PayrollReportXlsx(models.AbstractModel):
         sheet = workbook.add_worksheet('Payroll_Report')
         # Headings only----------------------------------------------
         sheet.write(6, 0, "Employee", H4)
-        sheet.write(6, 1, "Salary Structure", H4)
-        sheet.write(6, 2, "Reference", H4)
-        sheet.write(6, 3, "From", H4)
-        sheet.write(6, 4, "To", H4)
-        count = 4
+        sheet.write(6, 1, "Badge ID", H4)
+        sheet.write(6, 2, "CNIC#", H4)
+        sheet.write(6, 3, "DOJ", H4)
+        sheet.write(6, 4, "Father Name", H4)
+        sheet.write(6, 5, "Department", H4)
+        sheet.write(6, 6, "Designation", H4)
+        sheet.write(6, 7, "Salary Structure", H4)
+        sheet.write(6, 8, "Reference", H4)
+        sheet.write(6, 9, "From", H4)
+        sheet.write(6, 10, "To", H4)
+        count = 10
         max_len = len(rule_list)
         heads_location = []
         if count != max_len:
@@ -52,10 +58,16 @@ class PayrollReportXlsx(models.AbstractModel):
         row = 7
         for rec in filtered_object:
             sheet.write(row, 0, rec.employee_id.name)
-            sheet.write(row, 1, rec.struct_id.name)
-            sheet.write(row, 2, rec.number)
-            sheet.write(row, 3, rec.date_from, date_format)
-            sheet.write(row, 4, rec.date_to, date_format)
+            sheet.write(row, 1, rec.employee_id.device_id)
+            sheet.write(row, 2, rec.employee_id.identification_id)
+            sheet.write(row, 3, rec.employee_id.x_joining_date, date_format)
+            sheet.write(row, 4, rec.employee_id.father_name)
+            sheet.write(row, 5, rec.employee_id.department_id.name)
+            sheet.write(row, 6, rec.employee_id.job_id.name)
+            sheet.write(row, 7, rec.struct_id.name)
+            sheet.write(row, 8, rec.number)
+            sheet.write(row, 9, rec.date_from, date_format)
+            sheet.write(row, 10, rec.date_to, date_format)
         # _______________________________________________________________________
         # for payslip line_ids ___________________________________________________
             for h in heads_location:

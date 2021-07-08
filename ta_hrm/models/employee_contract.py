@@ -8,4 +8,6 @@ import pytz
 
 class HrContract(models.Model):
     _inherit = "hr.contract"
+
     mobile_allowance = fields.Monetary(string="Mobile Allowance", store=True)
+    vehicle_repair_maintenance = fields.Monetary(string="Vehicle/Repair & Maintenance")
