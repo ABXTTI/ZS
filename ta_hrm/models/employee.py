@@ -65,6 +65,8 @@ class HrAttendance(models.Model):
     @api.depends('worked_hours', 'eval_field')
     def get_overtime(self):
         for rec in self:
+            rec.rule_overtime = 0
+            rec.t_overtime = 0
             print("@@@@@@@@@@@@@ ITS WORKING @@@@@@@@")
             check_in_local = rec.check_in + datetime.timedelta(hours=5) #converting to local time
             day = check_in_local.date()
