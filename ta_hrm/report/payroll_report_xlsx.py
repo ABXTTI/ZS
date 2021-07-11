@@ -40,7 +40,11 @@ class PayrollReportXlsx(models.AbstractModel):
         sheet.write(6, 8, "Reference", H4)
         sheet.write(6, 9, "From", H4)
         sheet.write(6, 10, "To", H4)
-        count = 10
+        sheet.write(6, 11, "Worked Days", H4)
+        sheet.write(6, 12, "OT Hours", H4)
+        sheet.write(6, 13, "Late In", H4)
+        sheet.write(6, 14, "Early Out", H4)
+        count = 14
         max_len = len(rule_list)
         heads_location = []
         if count != max_len:
@@ -68,6 +72,15 @@ class PayrollReportXlsx(models.AbstractModel):
             sheet.write(row, 8, rec.number)
             sheet.write(row, 9, rec.date_from, date_format)
             sheet.write(row, 10, rec.date_to, date_format)
+            if rec.actual_worked_days_ids:
+                sheet.write(row, 11, rec.actual_worked_days_ids[0].number_of_days if
+                                                    rec.actual_worked_days_ids[0].number_of_days else "")
+                sheet.write(row, 12, rec.actual_worked_days_ids[3].number_of_hours if
+                                                    rec.actual_worked_days_ids[3].number_of_hours else "")
+                sheet.write(row, 13, rec.actual_worked_days_ids[4].number_of_hours if
+                                                    rec.actual_worked_days_ids[4].number_of_hours else "")
+                sheet.write(row, 14, rec.actual_worked_days_ids[5].number_of_hours if
+                                                    rec.actual_worked_days_ids[5].number_of_hours else "")
         # _______________________________________________________________________
         # for payslip line_ids ___________________________________________________
             for h in heads_location:
