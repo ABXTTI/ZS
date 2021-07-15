@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_payslip_worked_days_actual_officer,hr.payslip.worked_days_actual.officer,model_hr_payslip_worked_days_actual,hr_payroll_community.group_hr_payroll_community_user,1,1,1,1
-
-
+access_piece_rate_operation_manager,piece.rate.operation.manager,model_piece_rate_operation,,1,1,1,1
+access_piece_rate_manager,piece.rate.manager,model_piece_rate,,1,1,1,1

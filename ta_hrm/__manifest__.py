@@ -18,12 +18,15 @@
     "license": "LGPL-3",
     "installable": True,
     "depends": [
+        'mrp',
         'report_xlsx',
         'hr',
         'hr_attendance',
         'hr_payroll_community',
     ],
     "data": [
+        "views/inherit_production_order_piece_rate.xml",
+        "views/piece_rate_operation.xml",
         "views/employee_contract.xml",
         "views/employee.xml",
         "views/attendance.xml",
