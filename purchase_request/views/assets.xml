@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- Adds all assets in Odoo -->
+        <template id="inherit_css_report" name="purchase_request assets" inherit_id="web.assets_common">
+            <xpath expr="." position="inside">
+		<!--These links will be called when loading your Odoo -->
+                <link rel="stylesheet" type="text/scss" href="/purchase_request/static/src/scss/pr.css"/>
+            </xpath>
+        </template>
+</odoo>
