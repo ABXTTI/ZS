@@ -17,6 +17,7 @@ class HrPayslipWorkedDaysActual(models.Model):
     code = fields.Char(required=True, help="The code that can be used in the salary rules")
     number_of_days = fields.Float(string='Number of Days', help="Number of days worked")
     number_of_hours = fields.Float(string='Number of Hours', help="Number of hours worked")
+    amount = fields.Float(sring="Amount", help="Amount")
     contract_id = fields.Many2one('hr.contract', string='Contract', required=True,
                                   help="The contract for which applied this input")
 
@@ -31,6 +32,11 @@ class HrPayslip(models.Model):
     def get_absents_etc(self):
         print("WWWWWWWOOOOOORRRRRRKINGGGGGG")
         if self.employee_id:
+            piece_rate = self.env['piece.rate'].search([('employee_id', '=', self.employee_id.id),
+                                                        ('is_completed', '=', True),
+                                                        ('complete_date', '>=', self.date_from),
+                                                        ('complete_date', '<=', self.date_to)])
+            # print(piece_rate, "########################################################")
             days = self.env['hr.attendance']
             total_days = days.search([('employee_id', '=', self.employee_id.id),
                                       ('x_day', '>=', self.date_from),
@@ -52,6 +58,7 @@ class HrPayslip(models.Model):
             sum_earlyout = sum(rec.early_out for rec in total_days)
             avg_shift_hrs = int(self.employee_id.resource_calendar_id.hours_per_day)
             sum_half_days = sum(rec.days_count for rec in total_days if rec.days_count < 1)
+            sum_piece_rate = sum(rec.total_amount for rec in piece_rate)
             # print(sum_overtime, "$%%###########")
 
             self.actual_worked_days_ids = [(5, 0, 0)]
@@ -127,6 +134,15 @@ class HrPayslip(models.Model):
                 'number_of_hours': 0,
                 'contract_id': self.contract_id.id,
             }))
+            var.append((0, 0, {
+                'name': _("Piece Rate Calculation"),
+                'sequence': 8,
+                'code': "PR94",
+                'number_of_days': 0,
+                'number_of_hours': 0,
+                'amount': sum_piece_rate if sum_piece_rate else 0.0,
+                'contract_id': self.contract_id.id,
+            }))
             self.actual_worked_days_ids = var
 
 class HrPayslipEmployees(models.TransientModel):
@@ -161,6 +177,10 @@ class HrPayslipEmployees(models.TransientModel):
         #//////////////////////////////////Added by AB///////////////////////////////////////////
             for p in payslips:
                 if p.employee_id.id == employee.id:
+                    piece_rate = self.env['piece.rate'].search([('employee_id', '=', p.employee_id.id),
+                                                                ('is_completed', '=', True),
+                                                                ('complete_date', '>=',  p.date_from),
+                                                                ('complete_date', '<=', p.date_to)])
                     days = self.env['hr.attendance']
                     total_days = days.search([('employee_id', '=', p.employee_id.id),
                                               ('x_day', '>=', p.date_from),
@@ -173,6 +193,7 @@ class HrPayslipEmployees(models.TransientModel):
                                                ('x_day', '>=', p.date_from),
                                                ('x_day', '<=', p.date_to),
                                                ('state', '=', 0)])
+
                     holidays_count = len(holidays)
                     absent_days_count = len(absent_days)
                     total_days_count = len(total_days)
@@ -182,8 +203,8 @@ class HrPayslipEmployees(models.TransientModel):
                     sum_earlyout = sum(rec.early_out for rec in total_days)
                     avg_shift_hrs = int(employee.resource_calendar_id.hours_per_day)
                     sum_half_days = sum(rec.days_count for rec in total_days if rec.days_count < 1)
-                    # print(sum_overtime, "$%%###########")
-
+                    sum_piece_rate = sum(rec.total_amount for rec in piece_rate)
+                    # print(sum_overtime, "$%%###########"
                     p.actual_worked_days_ids = [(5, 0, 0)]
                     var = []
                     # for worked days
@@ -255,6 +276,15 @@ class HrPayslipEmployees(models.TransientModel):
                         'code': "HDAYS95",
                         'number_of_days': sum_half_days if sum_half_days else 0.0,
                         'number_of_hours': 0,
+                        'contract_id': p.contract_id.id,
+                    }))
+                    var.append((0, 0, {
+                        'name': _("Piece Rate Calculation"),
+                        'sequence': 8,
+                        'code': "PR94",
+                        'number_of_days': 0,
+                        'number_of_hours': 0,
+                        'amount': sum_piece_rate if sum_piece_rate else 0.0,
                         'contract_id': p.contract_id.id,
                     }))
                     p.actual_worked_days_ids = var
