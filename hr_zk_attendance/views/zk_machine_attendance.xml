@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_attendance_logs_tree" model="ir.ui.view">
+        <field name="name">attendance.logs.tree</field>
+        <field name="model">attendance.logs</field>
+        <field name="arch" type="xml">
+            <tree string="Attendance Logs">
+                <field name="punching_day"/>
+                <field name="name"/>
+                <field name="device_id"/>
+                <field name="punch_type"/>
+                <field name="attendance_type"/>
+                <field name="address_id"/>
+                <field name="punching_time"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="zk_machine_attendance_logs_action" model="ir.actions.act_window">
+        <field name="name">Machine Attendances</field>
+        <field name="res_model">attendance.logs</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+<!--    <menuitem id="zk_machine_menu" parent="hr_attendance.menu_hr_attendance_root" sequence="50" name="Biometric Manager" />-->
+    <menuitem id="zk_machine_sub_menu_2" parent="zk_machine_menu"  name="Machine Attendance logs" action="zk_machine_attendance_logs_action" sequence="2"/>
+</odoo>
+
