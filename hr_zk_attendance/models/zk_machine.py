@@ -109,9 +109,9 @@ class ZkMachine(models.Model):
                 attendance_exist = zk_attendance.search([('device_id', '=', att.user_id),
                                                          ('punching_time', '=', att.timestamp)])
                 if not attendance_exist:
-                    print(att)
                     employee_id = employee_obj.search([('device_id', '=', att.user_id)])
                     if employee_id:
+                        print(att)
                         # print(date
                         # print(type(att.timestamp))
                         zk_attendance.create({
@@ -123,6 +123,7 @@ class ZkMachine(models.Model):
                                                 'punching_time': (att.timestamp - timedelta(hours=5)),
                                                 'address_id': self.address_id.id
                                                 })
+            print("*********************************************Funciton completed *********************")
         except Exception as e:
             error = "Process terminate Unable to Connect : {}".format(e)
             raise ValidationError(error)
