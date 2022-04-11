@@ -1,0 +1,50 @@
+<odoo>
+
+	<record id="view_auto_leave_allocation_form" model="ir.ui.view">
+		<field name="name">view.auto.leave.allocation.form</field>
+		<field name="model">automatic.leave.allocation</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<h1>
+						<field name="name" colspan="4" required="1" />
+					</h1>
+					<group name="grp_main" colspan="4" col="4">
+						<field name="active" invisible="1" />
+						<widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
+						<field name="leave_type_id" required="1" domain="[('allocation_type','!=','no')]" />
+						<field name="type_request_unit" invisible="1" />
+						<field name="alloc_by" widget="radio" required="1" />
+						<field name="no_of_days" attrs="{'invisible':[('type_request_unit', '=', 'hour')]}" />
+					</group>
+					<notebook>
+						<page name="pg_emp" string="Employees" attrs="{'invisible':[('alloc_by','!=','by_emp')]}">
+							<field name="emp_ids" colspan="4"></field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="view_auto_leave_allocation_tree" model="ir.ui.view">
+		<field name="name">view.auto.leave.allocation.tree</field>
+		<field name="model">automatic.leave.allocation</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name" />
+				<field name="leave_type_id" />
+				<field name="alloc_by" />
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_auto_leave_allocation" model="ir.actions.act_window">
+		<field name="name">Automatic Leave Allocation</field>
+		<field name="res_model">automatic.leave.allocation</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+	<menuitem id="menu_auto_leave_allocation" action="action_auto_leave_allocation" parent="hr_holidays.menu_hr_holidays_configuration" groups="hr_holidays.group_hr_holidays_manager,hr_holidays.group_hr_holidays_user" />
+
+</odoo>
