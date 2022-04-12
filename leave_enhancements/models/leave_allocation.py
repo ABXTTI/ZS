@@ -34,6 +34,7 @@ class AutomaticLeaveAllocation(models.Model):
                                string='Employees',
                                track_visibility='onchange')
     
+    
     def leaves_allocation(self,type,st = None):
     
         alloc_obj = self.env['hr.leave.allocation']
@@ -139,31 +140,42 @@ class AutomaticLeaveAllocation(models.Model):
 
 
     def leaves_refusal(self):
-        exempted_leave_type = self.env['hr.leave.type'].search([('name','=ilike','%Annual%')])
+        leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
+        leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
         
-        hr_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','!=',exempted_leave_type.id)])
+        casual_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type1.id)])
+        sick_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type2.id)])
         
-        for rec in hr_leaves.filtered(lambda x:x.state == 'validate'):
-            rec.action_refuse()
+        for recc in casual_leaves.filtered(lambda x:x.state == 'validate'):
+            recc.action_refuse()
+        
+        for recs in sick_leaves.filtered(lambda x:x.state == 'validate'):
+            recs.action_refuse()
         
 
     @api.model
     def _auto_leaves_allocation_sc(self):
         self.leaves_refusal()
         
-        exempted_leave_type = self.env['hr.leave.type'].search([('name','=ilike','%Annual%')])
+        leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
+        leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
         
-        leaves_config = self.env['automatic.leave.allocation'].search([('leave_type_id','!=', exempted_leave_type.id)])
+        leaves_config1 = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type1.id)])
+        leaves_config2 = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type2.id)])
         
-        for rec in leaves_config:
-            rec.leaves_allocation('sc',exempted_leave_type)
+        for recc in leaves_config1:
+            recc.leaves_allocation('sc',leave_type1)
+        
+        for recs in leaves_config2:
+            recs.leaves_allocation('sc',leave_type2)
+        
         
     @api.model
     def _auto_leaves_allocation_an(self):
         
-        exempted_leave_type = self.env['hr.leave.type'].search([('name','=ilike','%Annual%')])
+        leave_type = self.env['hr.leave.type'].search([('name','=ilike','%Annual%')])
         
-        leaves_config = self.env['automatic.leave.allocation'].search([('leave_type_id','=', exempted_leave_type.id)])
+        leaves_config = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type.id)])
         
         if leaves_config:
-            leaves_config[0].leaves_allocation('annual',exempted_leave_type)
+            leaves_config[0].leaves_allocation('annual',leave_type)
