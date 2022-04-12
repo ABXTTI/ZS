@@ -143,15 +143,17 @@ class AutomaticLeaveAllocation(models.Model):
         leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
         leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
         
-        casual_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type1.id)])
-        sick_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type2.id)])
+        casual_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type1.id),('state','=','validate')])
+        sick_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type2.id),('state','=','validate')])
         
-        for recc in casual_leaves.filtered(lambda x:x.state == 'validate'):
-            recc.action_refuse()
+        if casual_leaves:
+            for recc in casual_leaves:
+                recc.action_refuse()
         
-        for recs in sick_leaves.filtered(lambda x:x.state == 'validate'):
-            recs.action_refuse()
-        
+        if sick_leaves:    
+            for recs in sick_leaves:
+                recs.action_refuse()
+            
 
     @api.model
     def _auto_leaves_allocation_sc(self):
