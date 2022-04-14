@@ -68,7 +68,6 @@ class AutomaticLeaveAllocation(models.Model):
                                 current_dtime = datetime.datetime.now()+datetime.timedelta(hours = 5)
                                 delta = current_dtime.date() - emp.date_of_joining
                                 
-                                print (delta)
                                 if delta.days >= 365:
 
                                     vals = {
@@ -139,25 +138,26 @@ class AutomaticLeaveAllocation(models.Model):
                                         emp.write({'annual_leaves_allocation_dt':current_dtime.date()})
 
 
-    def leaves_refusal(self):
-        leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
-        leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
-        
-        casual_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type1.id),('state','=','validate')])
-        sick_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type2.id),('state','=','validate')])
-        
-        if casual_leaves:
-            for recc in casual_leaves:
-                recc.action_refuse()
-        
-        if sick_leaves:    
-            for recs in sick_leaves:
-                recs.action_refuse()
-            
+    # def leaves_refusal(self):
+    #     leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
+    #     leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
+    #
+    #     casual_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type1.id),('state','=','validate')])
+    #     sick_leaves = self.env['hr.leave.allocation'].search([('holiday_status_id','=',leave_type2.id),('state','=','validate')])
+    #
+    #     if casual_leaves:
+    #         for recc in casual_leaves:
+    #             recc.action_refuse()
+    #
+    #     if sick_leaves:    
+    #         for recs in sick_leaves:
+    #             recs.action_refuse()
+    #
+
 
     @api.model
     def _auto_leaves_allocation_sc(self):
-        self.leaves_refusal()
+        #self.leaves_refusal()
         
         leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
         leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
