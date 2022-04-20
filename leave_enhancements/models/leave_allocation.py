@@ -146,11 +146,20 @@ class AutomaticLeaveAllocation(models.Model):
         for al in self:
             if al.alloc_by == 'by_emp':
                 for emp in al.emp_ids:
+                    remaining = 0.0
+                    allocated = 0.0
+                    availed = 0.0
 
                     allocated_leaves = self.env['hr.leave.allocation'].search([('employee_id','=',emp.id),('holiday_status_id','=',st.id),('state','=','validate')])
                     availed_leaves = self.env['hr.leave'].search([('employee_id','=',emp.id),('holiday_status_id','=',st.id),('state','=','validate')])
                     
-                    remaining = allocated_leaves - availed_leaves     
+                    for r in allocated_leaves:
+                        allocated += r.number_of_days
+                            
+                    for a in availed_leaves:
+                        availed += a.number_of_days
+                    
+                    remaining = allocated - availed     
                     
                     if remaining < 0:
                             
@@ -207,8 +216,8 @@ class AutomaticLeaveAllocation(models.Model):
         
         if leaves_config:
             leaves_config[0].leaves_allocation('annual',leave_type)
-    
-    
+
+    @api.model    
     def _auto_balance_leaves_allocation(self):
         
         leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])

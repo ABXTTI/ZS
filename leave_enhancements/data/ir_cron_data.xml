@@ -26,7 +26,7 @@
 	
 	<record id="auto_leave_alloc_cron_balance" model="ir.cron">
 		<field name="name">Automatic Balance Leave Allocation</field>
-		<field name="model_id" ref="model_automatic_balance_leave_allocation" />
+		<field name="model_id" ref="model_automatic_leave_allocation" />
 		<field name="state">code</field>
 		<field name="code">model._auto_balance_leaves_allocation()</field>
 		<field name="interval_number">1</field>
@@ -36,7 +36,7 @@
 		<field name="nextcall">2022-05-01 19:05:00</field>
 	</record>
 	
-<record id="auto_leave_validation" model="ir.cron">
+	<record id="auto_leave_validation" model="ir.cron">
 		<field name="name">Automatic Leave Validation</field>
 		<field name="model_id" ref="model_hr_leave" />
 		<field name="state">code</field>
