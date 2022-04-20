@@ -7,6 +7,7 @@
     'depends': ['base','hr_holidays'],
     'data':[
         'security/ir.model.access.csv',
+        'security/leaves_approval_group.xml',
         'views/model.xml',
         'data/ir_cron_data.xml',
         'views/leave_allocation_view.xml',

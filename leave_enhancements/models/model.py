@@ -45,10 +45,35 @@ class inheritHrLeave(models.Model):
             
             leave_request = self.search([('employee_id','=',self.employee_id.id),('state','=','validate'),
                          ('request_date_from','>=',Month_of_start),
-                         ('request_date_to','<=',Month_of_end)])
+                         ('request_date_to','<=',Month_of_end),('holiday_status_id','=',self.holiday_status_id.id)])
             
             if leave_request:
                 raise Warning(_("You have already availed leave for this month"))
             
         res = super(inheritHrLeave, self).action_confirm()
+        return res
+    
+    def action_approve(self):
+        
+        casual = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
+        sick = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
+        
+        if self.holiday_status_id == casual or self.holiday_status_id == sick:
+
+            rec = self.env['automatic.leave.allocation'].search([('leave_type_id','=', self.holiday_status_id.id)])
+            if self.number_of_days > rec.no_of_days:
+                raise Warning(_("You cannot request more than allowed days"))
+            
+            Startdate = self.request_date_from
+            Month_of_start = Startdate.replace(day = 1)
+            Month_of_end = Startdate.replace(day = calendar.monthrange(Startdate.year, Startdate.month)[1])
+            
+            leave_request = self.search([('employee_id','=',self.employee_id.id),('state','=','validate'),
+                         ('request_date_from','>=',Month_of_start),
+                         ('request_date_to','<=',Month_of_end),('holiday_status_id','=',self.holiday_status_id.id)])
+            
+            if leave_request:
+                raise Warning(_("You have already availed leave for this month"))
+            
+        res = super(inheritHrLeave, self).action_approve()
         return res

@@ -5,12 +5,13 @@ class inheritHrLeave(models.Model):
     _inherit = 'hr.leave'
         
     def validate_cron(self):
-        current_dtime = datetime.datetime.now()+datetime.timedelta(hours = 5)
-        current_dt = current_dtime.date()
-        
-        for rec in self.search([('state','=','confirm')]):
-            if rec.request_date_from >= current_dt:
-                rec.action_approve()
+        pass
+        # current_dtime = datetime.datetime.now()+datetime.timedelta(hours = 5)
+        # current_dt = current_dtime.date()
+        #
+        # for rec in self.search([('state','=','confirm')]):
+        #     if rec.request_date_from >= current_dt:
+        #         rec.action_approve()
 
 class AutomaticLeaveAllocation(models.Model):
     _name = "automatic.leave.allocation"
@@ -137,7 +138,32 @@ class AutomaticLeaveAllocation(models.Model):
                                         alloc.action_approve()
                                         emp.write({'annual_leaves_allocation_dt':current_dtime.date()})
 
+    
+    def balance_leaves_allocation(self,type,st = None):
+    
+        alloc_obj = self.env['hr.leave.allocation']
+        
+        for al in self:
+            if al.alloc_by == 'by_emp':
+                for emp in al.emp_ids:
 
+                    allocated_leaves = self.env['hr.leave.allocation'].search([('employee_id','=',emp.id),('holiday_status_id','=',st.id),('state','=','validate')])
+                    availed_leaves = self.env['hr.leave'].search([('employee_id','=',emp.id),('holiday_status_id','=',st.id),('state','=','validate')])
+                    
+                    remaining = allocated_leaves - availed_leaves     
+                    
+                    if remaining < 0:
+                            
+                        vals = {'name': 'Auto - Balance Leave Allocation for ' + emp.name,
+                                    'holiday_status_id': al.leave_type_id.id,
+                                    'holiday_type': 'employee',
+                                    'employee_id': emp.id,}
+                            
+                        vals.update({'number_of_days': abs(remaining)})
+                            
+                        alloc = alloc_obj.create(vals)
+                        alloc.action_approve()                            
+    
     # def leaves_refusal(self):
     #     leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
     #     leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
@@ -181,3 +207,25 @@ class AutomaticLeaveAllocation(models.Model):
         
         if leaves_config:
             leaves_config[0].leaves_allocation('annual',leave_type)
+    
+    
+    def _auto_balance_leaves_allocation(self):
+        
+        leave_type1 = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
+        leave_type2 = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
+        leave_type3 = self.env['hr.leave.type'].search([('name','=ilike','%Annual%')])
+        
+        leaves_config1 = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type1.id)])
+        leaves_config2 = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type2.id)])
+        leaves_config3 = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type3.id)])
+        
+        
+        for recc in leaves_config1:
+            recc.balance_leaves_allocation('sc',leave_type1)
+        
+        for recs in leaves_config2:
+            recs.balance_leaves_allocation('sc',leave_type2)
+            
+        for reca in leaves_config3:
+            reca.balance_leaves_allocation('sc',leave_type3)
+    
