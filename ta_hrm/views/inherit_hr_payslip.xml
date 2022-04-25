@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_payslip_form_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll_community.view_hr_payslip_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page/separator" position="before">
+                <separator string="Worked Days Actual"/>
+                <field name="actual_worked_days_ids">
+                    <tree string="Worked Days" editable="bottom">
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="number_of_days" sum="Total Working Days"/>
+                            <field name="number_of_hours"/>
+                            <field name="amount"/>
+                            <field name="contract_id"/>
+                            <field name="sequence" invisible="True"/>
+                    </tree>
+                    <form string="Worked Day">
+                            <group col="4">
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="sequence"/>
+                                <field name="number_of_days"/>
+                                <field name="number_of_hours"/>
+                                <field name="contract_id"/>
+                            </group>
+                    </form>
+                </field>
+            </xpath>
+        </field>
+    </record>
+</odoo>

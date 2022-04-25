@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_employee_form_inherit" model="ir.ui.view">
+        <field name="name">view.employee.form.inherit1</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="x_joining_date" string="Joining Date"/>
+                <field name="is_late_deduction" string="Late Deduction"/>
+                <field name="is_earlyout_deduction" string="EarlyOut Deduction"/>
+                <field name="is_attendance_allowance" string="Attendance Allowance"/>
+            </xpath>
+            <xpath expr="//field[@name='work_location']" position="after">
+                <field name="is_piece_rate" string="Is Piece Rate"/>
+                <field name="is_Overtime" string="Overtime"/>
+                <field name="is_pessi" string="PESSI"/>
+                <field name="is_eobi" string="EOBI"/>
+            </xpath>
+            <xpath expr="//field[@name='country_id']" position="before">
+                <field name="father_name" string="Father Name"/>
+            </xpath>
+        </field>
+    </record>
+
+<!-- Search  view Inherit   -->
+    <record id="view_employee_filter_inherit" model="ir.ui.view">
+        <field name="name">view.employee.filter.inherit1</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="device_id" string="Badge ID"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="piece_rate_operation_tree" model="ir.ui.view">
+        <field name="name">piece.rate.operation.tree</field>
+        <field name="model">piece.rate.operation</field>
+        <field name="arch" type="xml">
+            <tree string="Piece Rate Operation">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="rate"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="piece_rate_operation_form" model="ir.ui.view">
+        <field name="name">piece.rate.operation.form</field>
+        <field name="model">piece.rate.operation</field>
+        <field name="arch" type="xml">
+            <form string="Piece Rate Operation" class="o_sale_order">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="rate"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_piece_rate_operation" model="ir.actions.act_window">
+        <field name="name">PieceRateOperation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">piece.rate.operation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your Operation Here!
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="zs_piece_rate_operation"
+        name="Piece Rate Operation" action="action_piece_rate_operation"
+        parent="hr_payroll_community.menu_hr_payroll_community_configuration"/>
+
+</odoo>
