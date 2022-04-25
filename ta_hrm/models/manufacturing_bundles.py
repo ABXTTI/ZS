@@ -54,20 +54,27 @@ class BundlePackage(models.Model):
             if len(so_id.order_line) > 1:
                 raise UserError("Sale Order Line Contains More Than 1 Line")
             else:
-                fields = so_id.order_line._fields
-                fields_list = []
-                for rec in fields:
-                    fields_list.append(rec)
-                start_num = 42
-                end_num = 86
-                relevent_fields_list = fields_list[start_num:end_num]
-                self.product_sizes = str(relevent_fields_list)
+                # fields = so_id.order_line._fields
+                # fields_list = []
+                # for rec in fields:
+                #     fields_list.append(rec)
+                # start_num = 42
+                # end_num = 86
+                # relevent_fields_list = fields_list[start_num:end_num]
+                relevent_fields_list = [
+                                        'x_1_2', 'x_2_3', 'x_3_4', 'x_4_5', 'x_5_6', 'x_6_7', 'x_7_8', 'x_8_9', 'x_9_10', 'x_10_11', 'x_11_12', 'x_12_13', 'x_13_14', 'x_14_15', 'x_16_17', 'x_18_19', 'x_20_21', 'x_0', 'x_2', 'x_4',
+                                        'x_6', 'x_8', 'x_10', 'x_12', 'x_14', 'x_16', 'x_18', 'x_20', 'x_22', 'x_24', 'x_26', 'x_28', 'x_30', 'x_xxs', 'xs_small', 'x_small', 'x_medium', 'x_large', 'x_xl', 'x_xxl', 'x_3xl', 'x_4xl',
+                                        'x_5xl', 'x_6xl'
+                                        ]
                 self.product_color = so_id.order_line.x_color
                 sum_qty = 0.0
+                true_fields = []
                 for rec in relevent_fields_list:
                     val = so_id.order_line[rec]
                     if val:
                         sum_qty += val
+                        true_fields.append(rec)
+                self.product_sizes = str(true_fields)
                 if sum_qty != self.product_quantity:
                     raise UserError("Total Quantity Does Not Match with total lines Quantity !!!!!!")
                 else:
