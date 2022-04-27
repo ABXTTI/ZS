@@ -24,7 +24,86 @@ class hrEmployee(models.Model):
     def name_search(self, name, args=None, operator='ilike', limit=100):
         employees = self.search(['|',('name', operator, name),('barcode', operator, name)])
         return employees.name_get()
+
+
+class hrContract(models.Model):
+    _inherit = 'hr.contract'
+
+
+    def check_leave_encashment_sick(self,date_from,date_end,employee_id):
+        
+        if self.employee_id.leave_encashment:
+            leave_type = self.env['hr.leave.type'].search([('name','=ilike','%Sick%')])
+            
+            availed_leaves = self.env['hr.leave'].search([('request_date_from','>=',date_from),('request_date_from','<=',date_end),
+                                                          ('employee_id','=',employee_id.id),('holiday_status_id','=',leave_type.id),
+                                                          ('state','=','validate')])
+            
+            if availed_leaves:
+                return 0
+            
+            else:
+                rec = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type.id)])
+                
+                if rec:
+                
+                    vals = {
+                        'name': 'Auto-Leave Register for Leave Encashment',
+                        'holiday_status_id': leave_type.id,
+                        'holiday_type': 'employee',
+                        'employee_id': employee_id.id,
+                        'request_date_from':date_from,
+                        'request_date_to':date_end,
+                        'number_of_days':rec[0].no_of_days}
+                
+                    Leave = self.env['hr.leave'].create(vals)
+                    Leave.action_approve()
+                
+
+                    return 1
+        
+        else:
+            return 0
+            
+    @api.model
+    def check_leave_encashment_casual(self,date_from,date_end,employee_id):
+        
+        if employee_id.leave_encashment:
     
+            leave_type = self.env['hr.leave.type'].search([('name','=ilike','%Casual%')])
+            
+            availed_leaves = self.env['hr.leave'].search([('request_date_from','>=',date_from),('request_date_from','<=',date_end),
+                                                              ('employee_id','=',employee_id.id),('holiday_status_id','=',leave_type.id),
+                                                              ('state','=','validate')])
+                
+            if availed_leaves:
+            
+                return 0
+            
+            else:
+                
+                rec = self.env['automatic.leave.allocation'].search([('leave_type_id','=', leave_type.id)])
+                
+                if rec:
+            
+                    vals = {
+                    'name': 'Auto-Leave Register for Leave Encashment',
+                    'holiday_status_id': leave_type.id,
+                    'holiday_type': 'employee',
+                    'employee_id': employee_id.id,
+                    'request_date_from':date_from,
+                    'request_date_to':date_end,
+                    'number_of_days':rec.no_of_days}
+        
+                    Leave = self.env['hr.leave'].create(vals)
+                    Leave.action_approve()
+            
+                    return 1
+            
+    
+        else:
+            return 0   
+
 class inheritHrLeave(models.Model):
     _inherit = 'hr.leave'
     
