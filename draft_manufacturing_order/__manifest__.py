@@ -1,0 +1,20 @@
+{
+    'name': 'iCatch Customization',
+    'version':  '13.0.1.0.0',
+    'category': 'Productivity',
+    'author':   'AB',
+    'website':  'www.ab.com',
+    'license':  'AGPL-3',
+    'summary':  'Misc. Customization',
+    'description':  """Misc. Customization""",
+    'depends': ['mrp'],
+    'data': [
+        'views/mrp_production.xml',
+        'views/tree_view_mass_mo_draft_function.xml',
+    ],
+    'demo': [],
+    'qweb': [],
+    'installable':  True,
+    'application':  True,
+    'auto_install': False,
+}

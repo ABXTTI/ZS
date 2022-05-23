@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_for_draft_manufacturing_order" model="ir.ui.view">
+        <field name="name">inherit.for.draft.manufacturing.order</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="after">
+                <button name="draft_mo" type="object" string="Draft MO" attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

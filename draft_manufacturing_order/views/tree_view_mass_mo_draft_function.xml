@@ -1,0 +1,10 @@
+<odoo>
+    <record id="action_mass_mo_draft_function_tree_view" model="ir.actions.server">
+        <field name="name">action.mass.mo.draft.function.tree.view</field>
+        <field name="model_id" ref="draft_manufacturing_order.model_mrp_production"/>
+        <field name="binding_model_id" ref="draft_manufacturing_order.model_mrp_production"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.draft_mo()</field>
+    </record>
+</odoo>
