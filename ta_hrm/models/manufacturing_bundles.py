@@ -86,8 +86,11 @@ class BundlePackage(models.Model):
                     modulus = sum_qty % self.required_bundle_size
                     print(modulus)
                     vals = []
+                    count = 0
                     for rec in range(0, int_factor):
+                        count += 1
                         vals.append((0,0, {
+                            'name': self.name + "-B0" + str(count),
                             'description': self.product_id.name,
                             'product_qty': self.required_bundle_size,
                             'bundle_contains_qty': self.required_bundle_size,
@@ -95,6 +98,7 @@ class BundlePackage(models.Model):
                         }))
                     if modulus:
                         vals.append((0,0, {
+                            'name': self.name + "-B0" + str(count + 1),
                             'description': self.product_id.name,
                             'product_qty': modulus,
                             'bundle_contains_qty': modulus,

@@ -12,15 +12,16 @@
         </record>
     </data>
 
-    <data noupdate="1">
-        <record id="seq_bundle_package_line" model="ir.sequence">
-            <field name="name">Seq Bundles Package Line</field>
-            <field name="code">sequence.bundle.package.line</field>
-            <field name="prefix">B-</field>
-            <field name="padding">5</field>
-            <field name="number_next">1</field>
-            <field name="number_increment">1</field>
-            <field name="company_id" eval="False"/>
-        </record>
-    </data>
+<!--    <data noupdate="1">-->
+<!--        <record id="seq_bundle_package_line" model="ir.sequence">-->
+<!--            <field name="name">Seq Bundles Package Line</field>-->
+<!--            <field name="code">sequence.bundle.package.line</field>-->
+<!--            <field name="prefix">B-</field>-->
+<!--            <field name="padding">5</field>-->
+<!--            <field name="number_next">1</field>-->
+<!--            <field name="number_increment">1</field>-->
+<!--            <field name="company_id" eval="False"/>-->
+<!--        </record>-->
+<!--    </data>-->
+    
 </odoo>
