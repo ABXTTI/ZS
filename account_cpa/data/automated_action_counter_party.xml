@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="base_automation_sequence_counter_party" model="base.automation">
+        <field name="name">Sequence Counter Party: On Creation of Record check and execute</field>
+        <field name="model_id" ref="account_cpa.model_counter_party"/>
+        <field name="state">code</field>
+        <field name="trigger">on_create</field>
+        <field name="active" eval="True"/>
+<!--        <field name="filter_domain">[('state', '=', 'draft')]</field>-->
+        <field name="code">
+for record in records:
+    if record.transaction_with == "customer":
+        ref = env['ir.sequence'].next_by_code('counter.party.customer')
+        record['name'] = ref
+    elif record.transaction_with == "vendor":
+        ref = env['ir.sequence'].next_by_code('counter.party.vendor')
+        record['name'] = ref
+        </field>
+    </record>
+</odoo>
