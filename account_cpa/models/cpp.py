@@ -17,7 +17,7 @@ class CounterParty(models.Model):
     _name = "counter.party"
 
     name = fields.Char(string="Name")
-    date = fields.Date(string="Date", required=True)
+    date = fields.Date(string="Date", required=True, default=datetime.datetime.today())
     detail = fields.Char(string="Detail", required=True)
     payment_type = fields.Selection([
         ('receive', 'Receive'),
@@ -36,15 +36,32 @@ class CounterParty(models.Model):
     account_credit = fields.Many2one("account.account", string="Credit Account")
     debit_partner = fields.Many2one("res.partner", string="Debit Partner")
     credit_partner = fields.Many2one("res.partner", string="Credit Partner")
+    currency_id = fields.Many2one("res.currency", string="Currency")
+    currency_amount = fields.Float(string="Amount in Currency")
+    rate = fields.Float(string="Rate", required=True, default=1.0)
+    amount = fields.Float(string="Amount", compute="cal_amount", store=True)
 
-    amount = fields.Float(string="Amount")
+    @api.depends('currency_id', 'currency_amount', 'rate')
+    def cal_amount(self):
+        for rec in self:
+            if rec.currency_id and rec.currency_amount and rec.rate:
+                rec.amount = rec.rate * rec.currency_amount
+            else:
+                rec.amount
 
     state = fields.Selection([
             ('draft', 'Draft'),
             ('post', 'Posted'),
             ('cancel', 'Cancelled'),
             ], string="State", help="State", required=True, default="draft")
+    advance_state = fields.Selection([
+            ('pending', 'Pending'),
+            ('cleared', 'Cleared'),
+            ('cancel', 'Cancelled'),
+            ('none', 'None'),
+            ], string="Advance State", help="State", required=True, default="none")
 
+    advance_status = fields.Selection([])
     move_id = fields.Many2one("account.move")
     journal_id = fields.Many2one("account.journal")
     cash_bank_journals_ids = fields.Many2one("account.journal")
@@ -111,6 +128,7 @@ class CounterParty(models.Model):
                         rec.account_credit = rec.partner_id.property_account_payable_id.id
                 elif rec.counter_adj_type == "advance_cash_or_bank":
                     if rec. transaction_with == 'customer':
+                        rec.advance_state = "pending"
                         rec.credit_partner = rec.partner_id.id
                         rec.debit_partner = rec.partner_id.id
                         rec.account_credit = rec.partner_id.advance_loan_account.id
@@ -124,6 +142,7 @@ class CounterParty(models.Model):
                         rec.account_debit = rec.partner_id.property_account_payable_id.id
 
                 elif rec.counter_adj_type == "advance_cash_or_bank":
+                    rec.advance_state = "pending"
                     rec.debit_partner = rec.partner_id.id
                     rec.account_debit = rec.partner_id.advance_loan_account.id
 
@@ -140,6 +159,19 @@ class CounterParty(models.Model):
             if rec.move_id:
                 rec.move_id.button_cancel()
             rec.state = "cancel"
+
+    def clear_advance(self):
+        for rec in self:
+            if rec.state == "post" and rec.advance_state != "cleared":
+                if rec.counter_adj_type == "advance_cash_or_bank":
+                    rec.action_draft()
+                    if rec.transaction_with == "customer":
+                        rec.account_credit = rec.partner_id.property_account_receivable_id.id
+                    elif rec.transaction_with == "vendor":
+                        rec.partner_id.property_account_payable_id.id
+                    rec.advance_state = "cleared"
+                    rec.action_post()
+
 
     def action_post(self):
         move = {
